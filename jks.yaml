@@ -1,0 +1,413 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bymana-svc
+spec:
+  selector:
+    app: bym-anasayfa
+  type: NodePort
+  ports:
+  - name: anaport
+    protocol: TCP
+    port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bymana-deploy
+
+  labels:
+    app: bym-anasayfa
+spec:
+  selector:
+    matchLabels:
+      app: bym-anasayfa
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: bym-anasayfa
+    spec:
+      containers:
+      - name: bym-anasayfa
+        image: cansentay/bymanasayfa:v1
+        resources:
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            cpu: 1000m
+            memory: 1000Mi
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: bymana-storage
+          mountPath: "/logs"
+      volumes:
+        - name: bymana-storage
+          emptyDir: {}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: bymana-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: bymana-deploy
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bymana-teknoloji
+
+spec:
+  selector:
+    app: bym-teknoloji
+  type: NodePort
+  ports:
+  - name: teknolojiport
+    protocol: TCP
+    port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bymteknoloji-deploy
+
+  labels:
+    app: bym-teknoloji
+spec:
+  selector:
+    matchLabels:
+      app: bym-teknoloji
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: bym-teknoloji
+    spec:
+      containers:
+      - name: bym-teknoloji
+        image: cansentay/bymteknoloji:v1
+        resources:
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            cpu: 1000m
+            memory: 1000Mi
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: bymteknoloji-storage
+          mountPath: "/logs"
+      volumes:
+        - name: bymteknoloji-storage
+          emptyDir: {}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: bymteknoloji-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: bymteknoloji-deploy
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bymana-iletisim
+
+spec:
+  selector:
+    app: bym-iletisim
+  type: NodePort
+  ports:
+  - name: iletisimport
+    protocol: TCP
+    port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bymiletisim-deploy
+
+  labels:
+    app: bym-iletisim
+spec:
+  selector:
+    matchLabels:
+      app: bym-iletisim
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: bym-iletisim
+    spec:
+      containers:
+      - name: bym-iletisim
+        image: cansentay/bymiletisim:v1
+        resources:
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            cpu: 1000m
+            memory: 1000Mi
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: bymiletisim-storage
+          mountPath: "/logs"
+      volumes:
+        - name: bymiletisim-storage
+          emptyDir: {}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: bymiletisim-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: bymiletisim-deploy
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bymana-bulut
+
+spec:
+  selector:
+    app: bym-bulut
+  type: NodePort
+  ports:
+  - name: bulutport
+    protocol: TCP
+    port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bymbulut-deploy
+
+  labels:
+    app: bym-bulut
+spec:
+  selector:
+    matchLabels:
+      app: bym-bulut
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: bym-bulut
+    spec:
+      containers:
+      - name: bym-bulut
+        image: cansentay/bulut:v1
+        resources:
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            cpu: 1000m
+            memory: 1000Mi
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: bymbulut-storage
+          mountPath: "/logs"
+      volumes:
+        - name: bymbulut-storage
+          emptyDir: {}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: bymbulut-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: bymbulut-deploy
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bymana-akademi
+
+spec:
+  selector:
+    app: bym-akademi
+  type: NodePort
+  ports:
+  - name: akademiport
+    protocol: TCP
+    port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bymakademi-deploy
+
+  labels:
+    app: bym-akademi
+spec:
+  selector:
+    matchLabels:
+      app: bym-akademi
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: bym-akademi
+    spec:
+      containers:
+      - name: bym-akademi
+        image: cansentay/bymakademi:v2
+        resources:
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            cpu: 1000m
+            memory: 1000Mi
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: bymakademi-storage
+          mountPath: "/logs"
+      volumes:
+        - name: bymakademi-storage
+          emptyDir: {}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: bymakademi-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: bymakademi-deploy
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: projem-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    kubernetes.io/ingress.global-static-ip-name: ingress-ip  
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.spec.ingressClassName: "nginx"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: "/teknoloji"
+        pathType: Prefix 
+        backend:
+          service:
+            name: bymana-teknoloji
+            port:
+              number: 8080
+      - path: "/bulut"
+        pathType: Prefix 
+        backend:
+          service:
+            name: bymana-bulut
+            port:
+              number: 8080
+      - path: "/akademi"
+        pathType: Prefix 
+        backend:
+          service:
+            name: bymana-akademi
+            port:
+              number: 8080
+      - path: "/iletisim"
+        pathType: Prefix 
+        backend:
+          service:
+            name: bymana-iletisim
+            port:
+              number: 8080
+      - path: "/"
+        pathType: Prefix 
+        backend:
+          service:
+            name: bymana-svc
+            port:
+              number: 8080
