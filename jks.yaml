@@ -109,7 +109,7 @@ spec:
     spec:
       containers:
       - name: bym-teknoloji
-        image: cansentay/bymteknoloji
+        image: cansentay/bymteknoloji:v1
         resources:
           requests:
             cpu: 500m
@@ -183,7 +183,7 @@ spec:
     spec:
       containers:
       - name: bym-iletisim
-        image: cansentay/bymiletisim
+        image: cansentay/bymiletisim:v1
         resources:
           requests:
             cpu: 500m
@@ -257,7 +257,7 @@ spec:
     spec:
       containers:
       - name: bym-bulut
-        image: cansentay/bulut
+        image: cansentay/bulut:v1
         resources:
           requests:
             cpu: 500m
@@ -331,7 +331,7 @@ spec:
     spec:
       containers:
       - name: bym-akademi
-        image: cansentay/bymakademi
+        image: cansentay/bymakademi:v1
         resources:
           requests:
             cpu: 500m
